@@ -1,0 +1,17 @@
+{"NTP_Time":"19700101T000011-0800", "host_Name":"Arrgh_D0D2","On_Line":1, "IP":"192.168.100.133" ,"Version":"1907", "Build":"20190921T100505-0700", "MAC_Address":"84F3EB73D0D2"}
+
+
+Topic:BCN/from_device/Arrgh-D5EB/Status Message: 
+{"NTP_Time":"19700101T000023-0800", "host_Name":"Arrgh-D5EB","Version":"1908", "Build":"20190921T100909-0700", "On_Line":1, "IP":"192.168.100.102", "MAC_Address":"5CCF7FC2D5EB", "Uptime":23}
+
+Topic:BCN/from_device/Arrgh_D5EB Message: 
+{"NTP_Time":"19700101T000001-0800", "host_Name":"Arrgh_D5EB","On_Line":1, "IP":"192.168.100.102" ,"Version":"1908", "Build":"20190921T100909-0700", "MAC_Address":"5CCF7FC2D5EB"}
+
+BCN/from_device/Arrgh_8FDC Message: 
+'HST:-1,EQ:-1/,BVt0:24.499,BVh0:0.3222,BVd0:23.8545,BVl0:23.8984,CAH:0,CHT:0,BTmx:29,BTcd:0/,BVt1:0.0,BVh1:0.0,BVd1:0.0,DAH:1,DST:0/,BVt2:24.5273,BVh2:0.2823,BVd2:23.9628/,BVt3:24.5039,BVh3:0.3535,BVd3:23.7969,BVl3:23.8984,BAmx:0.0 '
+
+BCN/from_device/Arrgh-8FDC/Status {"NTP_Time":"19700101T030537-0800", "host_Name":"Arrgh-8FDC","Version":"1908",  "Build":"20190921T100909-0700", "On_Line":1, "IP":"192.168.100.165", "MAC_Address":"600194078FDC", "Uptime":11137}
+
+
+Topic:BCN/from_device/Arrgh_8FDC Message: 
+'BV:24.5292,BVh:0.3516,BVd:23.8261/,BVtR:24.5292,BVhR:0.3516,BVdR:23.8261/,BVtD:24.5273,BVhD:0.291,BVdD:23.9453/,BC:12,BCAL:-1,Bv80:28.4414,AREF:0x03D0,toD:0x02F9,AtoDVcel:0x0B8B/,BA:-0.25,BT:30/,Dbug:0x00000000 '

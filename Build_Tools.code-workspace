@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "..\\..\\..\\AWS"
+		}
+	],
+	"settings": {
+		"task.quickOpen.showAll": true,
+		"task.slowProviderWarning": null,
+		"liveServer.settings.multiRootWorkspaceName": "PaGoI-MILwright",
+		"files.associations": {
+			"*.py": "python",
+			"functional": "cpp"
+		},
+		"debug.internalConsoleOptions": "openOnSessionStart"
+	}
+}

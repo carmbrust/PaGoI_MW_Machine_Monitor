@@ -1,0 +1,17 @@
+admin.htm
+admin.htm.gz
+Charger_Status_Redirect.htm
+config_mcc.htm
+config_mqtt.htm
+config_network.htm
+edit.htm
+general.htm
+index.htm
+info.htm
+install.htm
+ntp.htm
+OTA_update.htm
+Rebooting.htm
+status_th.htm
+system.htm
+WebsocketTest.htm

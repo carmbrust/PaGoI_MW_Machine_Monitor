@@ -1,0 +1,18 @@
+usage: decoder.py [-h] [-p {ESP8266,ESP32}] [-t TOOL] -e ELF [-f] file
+
+decode ESP Stacktraces.
+
+positional arguments:
+  file                  The file to read the exception data from ('-' for
+                        STDIN)
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p {ESP8266,ESP32}, --platform {ESP8266,ESP32}
+                        The platform to decode from
+  -t TOOL, --tool TOOL  Path to the xtensa toolchain
+  -e ELF, --elf ELF     path to elf file
+  -f, --full            Print full stack dump
+
+
+python3 u:\arduino\Debugs\decoder.py -p ESP8266 -t ~/.platformio/packages/toolchain-xtensa -e .pio\build\esp01_1m_160\firmware.elf u:\Arduino\Debugs\arrgh20190830_0931.txt

@@ -1,0 +1,56 @@
+{
+	"Project": "PaGoI_MM",
+	"SQL_Server": "ec2.xxx.x.x.",
+	"SQL_DatabaseName": "",
+	"SQL_Username": "default",
+	"SQL_Password": "default",
+	"AP_BrowserConfigMode": "false",
+    "AP_Default_SSID": "MW_MM_AP",
+	"AP_Default_PASS": "MWat1450I",
+	"MQTT_Broker": [
+		192, 168, 100, 1
+	],
+	"MQTT_Topic": "Sensor",
+	"MQTT_Port": 1883,
+	"MQTT_QoS": 0,
+	"MQTT_Retain": false,
+	"NTP_Server": "192.168.100.1",
+	"NTP_Update_Interval": 16,
+	"NTP_Time_Offset": -80,
+	"NTP_Day_Light": true,
+	"Debug_mode": false,
+	"Serial_Speed": 9600,
+	"ServerMode": "STA",
+	"wwwUser": "Us3r",
+	"wwwAuth": "1234",
+	"Model": "Model One",
+	"Manufacturer": "tbd",
+	"Acquired": "2021-01-01",
+	"TargetCT": 10,
+	"debounceDelay": 1000,
+	"dns": [
+		192,
+		168,
+		100,
+		1
+	],
+	"dhcp": true,
+	"static_IP": [
+		192,
+		168,
+		100,
+		154
+	],
+	"netmask": [
+		255,
+		255,
+		255,
+		0
+	],
+	"gatewayIP": [
+		192,
+		168,
+		100,
+		1
+	]
+}

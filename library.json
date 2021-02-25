@@ -1,0 +1,18 @@
+{
+    "name": "ESP MQTT Server",
+    "keywords": "mqtt, http, asyncClient, serialMonitor",
+    "description": "Communicate from serial UART to MQTT with defined topics. Self configuring AP and status pages from SPIFF",
+    "authors":
+    {
+        "name": "Chris Armbrust",
+        "url": "http:/marin-digital.com"
+    },
+    "version": "0.9",
+    "repository":
+    {
+        "type": "git",
+        "url": "http://192.168.1.201/"
+    },
+    "frameworks": "arduino",
+    "platforms": "atmelavr"
+}

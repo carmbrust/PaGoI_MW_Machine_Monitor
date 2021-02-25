@@ -1,0 +1,11 @@
+while ((year(now()) < 1980) || (year(now()) > 2035)) {
+    int i;
+    delay (500);
+    Serial.print("+");
+    NTP.begin("0.us.pool.ntp.org", TIMEZONE, true);
+    i++;
+    if (i > 10) {
+      digitalWrite(15,0); // ensure the GPIO15 is off
+      ESP.restart();
+    }
+  }

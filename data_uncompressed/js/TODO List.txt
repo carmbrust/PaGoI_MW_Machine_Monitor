@@ -1,0 +1,9 @@
+1. first pass minify
+2. better gzip
+3. best minify then gzip
+
+
+//TODO: add files to gzip to the batch file, html2gz.bat (could rename to gzip_files_to_data_dir.bat)
+	1. gzip
+	2. delete old copies and clutter
+	3. copy to ..\data 

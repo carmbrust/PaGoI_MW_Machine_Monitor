@@ -1,0 +1,15 @@
+body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif;
+        Color: #000088;
+        font-size: normal;
+        line-height: normal;
+       }
+footer {background-color: #ccccee;
+        font-family: Arial, Helvetica, Sans-Serif;
+        Color:black;
+        text-align: right;
+        font-size: smaller;
+        line-height: 60% ;
+        }
+.center {
+        text-align: center;
+        }

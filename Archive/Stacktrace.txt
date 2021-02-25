@@ -1,0 +1,27 @@
+Exception (28):
+epc1=0x4000bdc8 epc2=0x00000000 epc3=0x00000000 excvaddr=0x00000000 depc=0x00000000
+
+>>>stack>>>
+
+ctx: cont
+sp: 3ffffd00 end: 3fffffc0 offset: 0190
+3ffffe90:  00000518 000000a3 000000a3 40100dff  
+3ffffea0:  3fff4274 4022465b 00000020 3fff41f0
+3ffffeb0:  3ffea54f 3ffecd5e 00000000 4021f87b
+3ffffec0:  0000204a 69666564 0000000c 4022af14  
+3ffffed0:  3fff4274 3fff5e84 3fffff10 00000001
+3ffffee0:  3fff5e6c 3fff41f0 3fff4264 4021f9cc  
+3ffffef0:  27207472 3fff8e44 3fff4264 00000000
+3fffff00:  3fff5e6c 3fff41f0 3fff4264 40224dbe
+3fffff10:  402372b8 00000000 40224638 40236180  
+3fffff20:  402372b8 00000042 3fffff00 3fffff30
+3fffff30:  00000000 00000000 3fff4264 00000080
+3fffff40:  00000000 3fff4338 3fff4264 4020d330  
+3fffff50:  3fff770c 3fffff70 4020c98c 4020c880
+3fffff60:  00000040 3fff4338 3fff3d40 4020ec6d
+3fffff70:  34333231 000f0000 84efeffe 402372b8  
+3fffff80:  00000000 feefeffe feefeffe feefeffe
+3fffff90:  feefeffe feefeffe feefeffe 3fff4484
+3fffffa0:  3fffdad0 00000000 3fff4444 4022b2e0  
+3fffffb0:  feefeffe feefeffe 3ffe8634 40100499
+<<<stack<<<

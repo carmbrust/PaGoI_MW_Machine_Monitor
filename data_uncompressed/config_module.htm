@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<!-- key parts and concept adopted from http://www.john-lassen.de/en/projects/esp-8266-arduino-ide-webconfig -->
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Set up home network">
+	<title>PaGoI Machine Monitor Network - Configure Module</title>
+
+	<!-- <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css" integrity="sha384-" crossorigin="anonymous"> -->
+	<!-- <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/grids-responsive-min.css"> -->
+	<!--local stored files-->
+	<!-- <link rel="stylesheet" href="./css/pure-min.css"> 
+    <link rel="stylesheet" href="./css/gridsresponsivemin.css">
+  	<link rel="stylesheet" href="./css/CustomStyles.min.css"> -->
+
+	<link rel="stylesheet" href="./css/PaGoI-global.min.css">
+
+</head>
+
+<body>
+	<!--
+[if lte IE 8]>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/grids-responsive-old-ie-min.css">
+	[endif]
+	[if gt IE 8]>
+    <link rel="stylesheet" href="./css/gridsresponsivemin.css">
+	[endif]
+	-->
+	<div class="custom-wrapper pure-g" id="menu">
+		<div class="pure-u-1 pure-u-md-1-3">
+			<div class="pure-menu">
+				<a href="http://www.pagoi.com" class="pure-menu-heading custom-brand" id="brand">PAGOI</a>
+				<a href="#" class="custom-toggle" id="toggle"><s class="bar"></s><s class="bar"></s></a>
+			</div>
+		</div>
+		<div class="pure-u-1 pure-u-md-1-3">
+			<div class="pure-menu pure-menu-horizontal custom-can-transform">
+				<ul class="pure-menu-list">
+					<li class="pure-menu-item"><a href="index.htm" class="pure-menu-link">Home</a></li>
+					<li class="pure-menu-item"><a href="info.htm" class="pure-menu-link">About</a></li>
+					<li class="pure-menu-item"><a href="#" class="pure-menu-link">Contact</a></li>
+					<li class="pure-menu-item"><a href="status_th.htm" class="pure-menu-link">Realtime Status</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<a href="admin.htm" class="pure-button">&#8678</a>&nbsp;&nbsp;<strong>Monitor Module
+		Configuration&nbsp;&nbsp;</strong><a href="general.htm" class="pure-button"> &#8680</a>
+	<hr> Update Module settings:<br>
+	<form action="" name="ParameterForm" method="post" class="pure-form pure-form-aligned  pure-u-1 pure-md-1-2 "
+		style="margin:1em;">
+		<!-- <form > -->
+		<fieldset>
+			<div class="pure-control-group">
+				<label for="Radio_ID" class="pure-u-md-1-12">Radio Identification: </label>
+				<input id="Radio_ID" name="Radio_ID" type="text" placeholder="2017mmdd" class="pure-u-md-1-8">
+			</div>
+		</fieldset>
+		<fieldset>
+			<div class="pure-control-group">
+				<label for="Model" class="pure-u-md-1-12">Model: </label>
+				<input id="Model" name="Model" type="text" placeholder="123456A" class="pure-u-md-1-12">
+			</div>
+		</fieldset>
+		<fieldset>
+			<div class="pure-control-group">
+				<label for="Manufacturer" class="pure-u-md-1-12">Manufacturer: </label>
+				<input id="Manufacturer" name="Manufacturer" type="text" placeholder="xxxxxxx" class="pure-u-md-1-8">
+			</div>
+		</fieldset>
+		<fieldset>
+			<div class="pure-control-group">
+				<label for="Acquired" class="pure-u-md-1-12">Acquisition Date: </label>
+				<input id="Acquired" name="Acquired" type="date" placeholder="2020-mm-dd" class="pure-u-md-1-8">
+			</div>
+		</fieldset>
+		<fieldset>
+			<div class="pure-control-group">
+				<label for="debounceDelay" class="pure-u-md-1-12">Minimum Relay Sense Time (msec): </label>
+				<input id="debounceDelay" name="debounceDelay" type="number" placeholder="12" class="pure-u-md-1-12">
+			</div>
+		</fieldset>
+		<fieldset>
+			<div class="pure-control-group">
+				<label for="TargetCT" class="pure-u-md-1-12">Target CycleTime: </label>
+				<input id="TargetCT" name="TargetCT" type="number" placeholder="12" class="pure-u-md-1-12">
+			</div>
+		</fieldset>
+		<fieldset>
+			<div class="pure-control-group">
+				<label for="LastCT" class="pure-u-md-1-12">Last Reported CycleTime: </label>
+				<input id="LastCT" name="LastCT" type="number" readonly placeholder="24" class="pure-u-md-1-12">
+			</div>
+		</fieldset>
+		<fieldset>
+			<div class="pure-control-group">
+				<label for="Temperature" class="pure-u-md-1-12">Temperature: </label>
+				<input id="Temperature" name="Temperature" readonly type="text" placeholder="32" class="pure-u-md-1-8">
+			</div>
+		</fieldset>
+		<fieldset>
+			<div class="pure-control-group">
+				<label for="Humidity" class="pure-u-md-1-12">Humidity: </label>
+				<input id="Humidity" name="Humidity" readonly type="text" placeholder="40" class="pure-u-md-1-8">
+			</div>
+		</fieldset>
+
+		<div class="pure-control-group">
+			<label for="save button">Update Configuration</label>
+			<button type="submit" style="width:150px; font-size:1.5em" class="pure-button cool"
+				onclick="return Validate_Submit_Elements();">Update</button></td>
+		</div>
+		</fieldset>
+	</form>
+
+	<div id="messages"></div>
+
+	<div class="Instructions">
+		<p>Update the above fields as needed and press "Update".</p>
+	</div>
+	<script>
+		//Main body related functions (for the microajax handling)
+		window.onload = function () {
+			// load("./css/pure_style.css", "css", function() {
+			load("./js/microajax.min.js", "js", function () {
+				setValues("/admin/modulevalues");
+			});
+			// });
+		};
+
+		function load(e, t, n) {
+			if ("js" == t) {
+				var a = document.createElement("script");
+				a.src = e,
+					a.type = "text/javascript",
+					a.async = !1,
+					a.onload = function () {
+						n();
+					},
+					document.getElementsByTagName("head")[0].appendChild(a)
+			} else if ("css" == t) {
+				var a = document.createElement("link");
+				a.href = e,
+					a.rel = "stylesheet",
+					a.type = "text/css",
+					a.async = !1,
+					a.onload = function () {
+						n()
+					},
+					document.getElementsByTagName("head")[0].appendChild(a)
+			}
+		}
+		//menu related functions (from PureCSS)
+		//Menu related functions
+		(function (window, document) {
+			var menu = document.getElementById('menu'),
+				WINDOW_CHANGE_EVENT = ('onorientationchange' in window) ? 'orientationchange' : 'resize';
+
+			function toggleHorizontal() {
+				[].forEach.call(
+					document.getElementById('menu').querySelectorAll('.custom-can-transform'),
+					function (el) {
+						el.classList.toggle('pure-menu-horizontal');
+					}
+				);
+			}
+
+			function toggleMenu() {
+				// set timeout so that the panel has a chance to roll up
+				// before the menu switches states
+				if (menu.classList.contains('open')) {
+					setTimeout(toggleHorizontal, 500);
+				}
+				else {
+					toggleHorizontal();
+				}
+				menu.classList.toggle('open');
+				document.getElementById('toggle').classList.toggle('x');
+			}
+
+			function closeMenu() {
+				if (menu.classList.contains('open')) {
+					toggleMenu();
+				}
+			}
+
+			document.getElementById('toggle').addEventListener('click', function (e) {
+				toggleMenu();
+				e.preventDefault();
+			});
+
+			window.addEventListener(WINDOW_CHANGE_EVENT, closeMenu);
+		})(this, this.document);
+
+		//NOTE: - process for sending which field to update. Can only send one update to the
+		//      MCC/BSM at a time. So, this is the kludge ....
+
+
+		function update_MCC_BSM(field_number) {
+			console.log("clicked radio button: " + field_number);
+			// could use this approach to update the field when the radio button/checkbox is clicked
+			//
+		}
+
+		function isNumeric(n) {
+			// works like jQuery function IsNumeric
+			return !isNaN(parseFloat(n)) && isFinite(n);
+		}
+
+		function Validate_Submit_Elements() {
+			var elementID = ["Radio_ID","Model", "Manufacturer", "Acquired",  "debounceDelay", "TargetCT"];
+			var Update_parm_values = [];
+			// Test parms_values
+			// Update_parm_values= ["radio1", "model x","madebyPagoi", "2021-01-24", 100, 10.1];
+
+			for (var i = 0, length = elementID.length; i < length; i++) {
+				Update_parm_values.push(document.getElementById(elementID[i]).value);
+				
+				// validation logic and if okay then submit:
+				var dataValid = 1;
+				var text = "Data is valid.";
+				var messages="Checking parameter: '" + String(i) + " " + elementID[i] + "' with new value of: '" + Update_parm_values[i] + "'\n\r" + text;
+				
+				switch (elementID[i]) {
+					case 'Model': // Model
+						break;
+					case 'Manufacturer': // Manufacturer
+						break;					
+					case 'Radio_ID': // Radio_ID	
+						break;
+					case 'Acquired': // Acquired Date
+						// if (Update_parm_values[i].length != 10) {
+						// 	text = "Must be a date. Suggested to use format: yyyy-mm-dd.";
+						// 	document.getElementById("messages").innerHTML = text;
+						// 	dataValid = 0;
+						// }
+						break;
+					case 'TargetCT': // TargetCT
+				
+						if (!isNumeric(Update_parm_values[i])) {
+							text = "Target Cycle time must be numeric.";
+							document.getElementById("messages").innerHTML = text;
+							dataValid = 0;
+							break;
+						}
+						
+					case 'debounceDelay': // debounce delay (in millisecs)
+						if (!isNumeric(Update_parm_values[i])) {
+							text = "Minimum relay closure time must be numeric.";
+							document.getElementById("messages").innerHTML = text;
+							dataValid = 0;
+							break;
+						}
+						
+					default:
+						text = "Updating Module settings on the module";
+						document.getElementById("messages").innerHTML = text;
+						dataValid = 1;
+						// break;
+				}
+				var statusMessage = "";
+				
+				if (dataValid == 0) {
+					statusMessage = "ERROR, can't update ";
+					statusMessage = statusMessage + "parameter: '" + String(i) + " " + elementID[i] + "' with new value of: '" + Update_parm_values[i] + "'\n\r" + text;
+					alert(statusMessage);
+					return false;
+				}
+			}
+
+			return true; // return true instead of trying to submit the form with js - May never get to this line
+
+		}
+
+		function submitForm(newField, value) { // this submits just one new value from the form
+			var form = document.forms.ParameterForm;
+			// form.action = 'put your url here';
+			var el = document.createElement("input");
+			el.type = "hidden";
+			el.name = newField;
+			el.value = value;
+			form.appendChild(el);
+			form.submit();
+		}
+
+	</script>
+
+
+
+</body>
+
+<footer style="font-size:.5em; text-align: right">
+	</style>
+	<p>Adaptation by Chris Armbrust, Marin Digital (c)2017-2021</p>
+	<p>Contact: <a href='mailto:info@marin-digital.com'>
+			info@marin-digital.com</a>.</p>
+	<p>Version: 1.1 20210122</p>
+</footer>
+
+</html>

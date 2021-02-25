@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Network Time Server">
+    <title>PaGoI Machine Monitor Network - NTP Server</title>
+
+    <!-- <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css" integrity="sha384-" crossorigin="anonymous"> -->
+    <!-- <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/grids-responsive-min.css"> -->
+    <!--local stored files-->
+	<!-- <link rel="stylesheet" href="./css/pure-min.css">
+    <link rel="stylesheet" href="./css/gridsresponsivemin.css">
+  	<link rel="stylesheet" href="./css/CustomStyles.min.css"> -->
+
+	  <link rel="stylesheet" href="./css/PaGoI-global.min.css">
+
+
+
+</head>
+<body>
+<!--
+[if lte IE 8]>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/grids-responsive-old-ie-min.css">
+	[endif]
+	[if gt IE 8]>
+	<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/grids-responsive-min.css">
+	[endif]
+	-->
+<div class="custom-wrapper pure-g" id="menu">
+    <div class="pure-u-1 pure-u-md-1-3">
+        <div class="pure-menu">
+            <a href="http://www.pagoi.com" class="pure-menu-heading custom-brand" id="brand">PAGOI</a>
+            <a href="#" class="custom-toggle" id="toggle"><s class="bar"></s><s class="bar"></s></a>
+        </div>
+    </div>
+    <div class="pure-u-1 pure-u-md-1-3">
+        <div class="pure-menu pure-menu-horizontal custom-can-transform">
+            <ul class="pure-menu-list">
+                <li class="pure-menu-item"><a href="index.htm" class="pure-menu-link">Home</a></li>
+                <li class="pure-menu-item"><a href="info.htm" class="pure-menu-link">About</a></li>
+                <li class="pure-menu-item"><a href="#" class="pure-menu-link">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<a href="config_network.htm" class="pure-button" > &#8678</a>&nbsp;&nbsp;<strong>Network Time Server</strong>&nbsp;&nbsp;<a href="config_mqtt.htm" class="pure-button" > &#8680</a>
+<p>Network Time Protocol Server IP address</p>
+	<hr>
+	<form action="" method="post">
+		<table border="0"  cellspacing="0" cellpadding="3" >
+			<tr>
+				<td align="right">NTP Server (URL|IP):</td>
+				<td>
+				<input type="text" id="ntpserver" name="ntpserver" maxlength="172" value=""></td>
+			</tr>
+			<tr>
+				<td align="right">Update Interval:</td>
+				<td>
+				<input type="text" id="update" name="update" size="3" maxlength="6" value=""> minutes (0=disable)</td>
+			</tr>
+			<tr>
+				<td align="right">Timezone</td>
+				<td>
+					<select  id="tz" name="tz">
+						<option value="-120">(GMT-12:00)</option>
+						<option value="-110">(GMT-11:00)</option>
+						<option value="-100">(GMT-10:00)</option>
+						<option value="-90">(GMT-09:00)</option>
+						<option value="-80">(GMT-08:00)</option>
+						<option value="-70">(GMT-07:00)</option>
+						<option value="-60">(GMT-06:00)</option>
+						<option value="-50">(GMT-05:00)</option>
+						<option value="-40">(GMT-04:00)</option>
+						<option value="-35">(GMT-03:30)</option>
+						<option value="-30">(GMT-03:00)</option>
+						<option value="-20">(GMT-02:00)</option>
+						<option value="-10">(GMT-01:00)</option>
+						<option value="0">(GMT+00:00)</option>
+						<option value="10">(GMT+01:00)</option>
+						<option value="20">(GMT+02:00)</option>
+						<option value="30">(GMT+03:00)</option>
+						<option value="35">(GMT+03:30)</option>
+						<option value="40">(GMT+04:00)</option>
+						<option value="45">(GMT+04:30)</option>
+						<option value="50">(GMT+05:00)</option>
+						<option value="55">(GMT+05:30)</option>
+						<option value="57">(GMT+05:45)</option>
+						<option value="60">(GMT+06:00)</option>
+						<option value="65">(GMT+06:30)</option>
+						<option value="70">(GMT+07:00)</option>
+						<option value="80">(GMT+08:00)</option>
+						<option value="90">(GMT+09:00)</option>
+						<option value="95">(GMT+09:30)</option>
+						<option value="100">(GMT+10:00)</option>
+						<option value="110">(GMT+11:00)</option>
+						<option value="120">(GMT+12:00)</option>
+						<option value="120">(GMT+12:00)</option>
+						<option value="130">(GMT+13:00)</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">Daylight saving:</td>
+				<td>
+				<input type="checkbox" id="dst" name="dst"></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+				<button type="submit" style="width:150px" class="pure-button cool" value="update">Update</td>
+			</tr>
+		</table>
+	</form>
+
+</body>
+
+<footer style="font-size:.5em; text-align: right"></style>
+<p>Adaptation by Chris Armbrust, Marin Digital (c)2017-2021</p>
+<p>Contact: <a href='mailto:info@marin-digital.com'>
+info@marin-digital.com</a>.</p>
+<p>Version: 1.0 20210122</p>
+</footer>
+</html>
+
+	<script>
+
+
+    window.onload = function () {
+				// load("./css/pure_style.min.css","css", function(){
+            load("./js/microajax.min.js", "js", function () {
+					setValues("/admin/ntpvalues");
+            });
+        // });
+    }
+		function load(e,t,n) {
+			if("js"==t) {
+				var a=document.createElement("script");
+				a.src=e,
+				a.type="text/javascript",
+				a.async=!1,
+				a.onload=function(){n()},
+				document.getElementsByTagName("head")[0].appendChild(a)
+			}
+			else if("css"==t) {
+				var a=document.createElement("link");
+				a.href=e,
+				a.rel="stylesheet",
+				a.type="text/css",
+				a.async=!1,
+				a.onload=function(){n()},
+				document.getElementsByTagName("head")[0].appendChild(a)
+			}
+		}
+
+
+	//Menu related functions
+	(function (window, document) {
+	var menu = document.getElementById('menu'),
+		WINDOW_CHANGE_EVENT = ('onorientationchange' in window) ? 'orientationchange':'resize';
+
+	function toggleHorizontal() {
+		[].forEach.call(
+			document.getElementById('menu').querySelectorAll('.custom-can-transform'),
+			function(el){
+				el.classList.toggle('pure-menu-horizontal');
+			}
+		);
+	};
+
+	function toggleMenu() {
+		// set timeout so that the panel has a chance to roll up
+		// before the menu switches states
+		if (menu.classList.contains('open')) {
+			setTimeout(toggleHorizontal, 500);
+		}
+		else {
+			toggleHorizontal();
+		}
+		menu.classList.toggle('open');
+		document.getElementById('toggle').classList.toggle('x');
+	};
+
+	function closeMenu() {
+		if (menu.classList.contains('open')) {
+			toggleMenu();
+		}
+	}
+
+	document.getElementById('toggle').addEventListener('click', function (e) {
+		toggleMenu();
+		e.preventDefault();
+	});
+
+	window.addEventListener(WINDOW_CHANGE_EVENT, closeMenu);
+	})(this, this.document);
+
+</script>
+
+</html>

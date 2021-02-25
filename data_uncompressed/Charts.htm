@@ -1,0 +1,235 @@
+<!--
+  Derived from:
+  FSWebServer - Example Index Page
+  Copyright (c) 2015 Hristo Gochkov. All rights reserved.
+  This file is part of the ESP8266WebServer library for Arduino environment.
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+  <title>ESP Monitor</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  <!-- <!-- <script type="text/javascript" src="./js/Chart.bundle.min.js"></script> --> -->
+  <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js\2.2.2/Chart.bundle.min.js" integrity="sha256-0mJl0YDK3QdHZZsN7e4XmWNvoGTJJZjZF6eSCECmysM=" crossorigin="anonymous"></script>-->
+  <!-- <script type="text/javascript" src="graphs.min.js"></script> -->
+  <script type="text/javascript">
+
+    var temp=[];
+    var humid=[];
+    var CT_Ave=[];
+    var Cycles=[];
+    var readingTime=[];
+    var borderColor=[ 'rgba(250,99,132,1)','rgba(52, 162, 235, 1)','rgba(253, 206, 86, 1)','rgba(74, 192, 192, 1)','rgba(155, 102, 255, 1)',
+                      'rgba(251,99,132,1)','rgba(54, 162, 235, 1)','rgba(255, 206, 86, 1)','rgba(75, 192, 192, 1)','rgba(255, 159, 64, 1)',
+                      'rgba(252,99,132,1)','rgba(54, 162, 235, 1)','rgba(255, 206, 86, 1)','rgba(75, 192, 192, 1)','rgba(153, 102, 255, 1)',
+                      'rgba(253,99,132,1)','rgba(54, 162, 235, 1)','rgba(255, 206, 86, 1)','rgba(255,99,132,1)','rgba(255, 159, 64, 1)'];
+    var backgroundColor=[
+                      'rgba(250, 99, 132, 0.2)','rgba(52, 162, 235, 0.2)','rgba(253, 206, 86, 0.2)','rgba(74, 192, 192, 0.2)','rgba(155, 102, 255, 0.2)',
+                      'rgba(251, 206, 86, 0.2)','rgba(75, 192, 192, 0.2)','rgba(153, 102, 255, 0.2)','rgba(255, 99, 132, 0.2)','rgba(255, 159, 64, 0.2)',
+                      'rgba(252, 99, 132, 0.2)','rgba(54, 162, 235, 0.2)','rgba(255, 206, 86, 0.2)','rgba(75, 192, 192, 0.2)','rgba(153, 102, 255, 0.2)',
+                      'rgba(253, 206, 86, 0.2)','rgba(75, 192, 192, 0.2)','rgba(255, 99, 132, 0.2)','rgba(153, 102, 255, 0.2)','rgba(255, 159, 64, 0.2)'];
+    var reloadPeriod = 5000;
+    var maxReadings= 20;
+    var running = false;
+
+
+     function onBodyLoad(){
+      var ctx = document.getElementById("myChart");
+      myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange", "Red", "Blue", "Yellow", "Green"],
+          datasets: [{
+              label: 'Temperature',
+              data: [12, 19, 3, 5, 2, 3, 10, 12, 16, 20],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255,99,132,1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255,99,132,1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(255, 159, 64, 1)',
+                  'rgba(255,99,132,1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255,99,132,1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(255,99,132,1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      suggestedMin:70
+                  }
+              }]
+          }
+      }
+  } );
+
+
+      var refreshInput = document.getElementById("refresh-rate");
+      refreshInput.value = reloadPeriod;
+      refreshInput.onchange = function(e){
+        var value = parseInt(e.target.value);
+        reloadPeriod = (value > 0)?value:0;
+        e.target.value = reloadPeriod;
+      };
+
+      var stopButton = document.getElementById("stop-button");
+      stopButton.onclick = function(e){
+        e=0;
+        running = false;
+      };
+      var startButton = document.getElementById("start-button");
+      startButton.onclick = function(e){
+        e=0;
+      };
+
+
+
+
+      //setInterval(function() {
+        myChart.data.datasets[0].data = temp;
+        myChart.data.labels = readingTime;
+        myChart.data.datasets[0].backgroundColor=[];
+        myChart.data.datasets[0].borderColor=[];
+        myChart.update();
+        console.log("myChart data: ", myChart.data.datasets[0].data);
+        console.log("Number of readings:", Object.keys(temp).length);
+        console.log("Readings labels:", myChart.data.labels, "readingTime: ", readingTime);
+        console.log("backgroundColor array: ",myChart.data.datasets[0].backgroundColor);
+        console.log("borderColor array: ",myChart.data.datasets[0].borderColor);
+
+        //}, 10000);
+
+      run();
+   }
+
+    function loadValues(){
+        if(!running) return;
+        var xh = new XMLHttpRequest();
+        xh.onreadystatechange = function(){
+          if (xh.readyState == 4){
+            if(xh.status == 200) {
+              var res = JSON.parse(xh.responseText);
+              console.log("temperature value returned:", res.temp);
+              if (res.temp> 32 && res.humid >0){
+                temp.push(res.temp);
+                while (Object.keys(temp).length>maxReadings){temp.shift();}
+                humid.push(res.humid);
+                while (Object.keys(humid).length>maxReadings){humid.shift();}
+                readingTime.push(res.nist_time);
+                while (Object.keys(readingTime).length>maxReadings){readingTime.shift();}
+                //// rotate the backgroundColor array
+                if (Object.keys(myChart.data.datasets[0].backgroundColor).length < maxReadings){
+                  myChart.data.datasets[0].backgroundColor.push(backgroundColor.shift());
+                  myChart.data.datasets[0].borderColor.push(borderColor.shift());
+                }
+                else{
+                  myChart.data.datasets[0].backgroundColor.push(myChart.data.datasets[0].backgroundColor.shift());
+                  myChart.data.datasets[0].borderColor.push(myChart.data.datasets[0].borderColor.shift());
+                }
+                //// rotate the backgroundColor array
+                //while (Object.keys(myChart.data.datasets[0].backgroundColor).length >= maxReadings){
+                //  myChart.data.datasets[0].backgroundColor.push(myChart.data.datasets[0].backgroundColor.shift());
+                //  }
+                if(running) {
+                  setTimeout(loadValues, reloadPeriod);
+                  }
+                myChart.data.datasets[0].data = temp;
+                myChart.data.labels = readingTime;
+                myChart.update();
+                console.log("Temeperature Array ", temp);
+                console.log("myChart data: ", myChart.data.datasets[0].data, " length", myChart.data.datasets[0].data.length);
+                console.log("backgroundColor array: ",myChart.data.datasets[0].backgroundColor, "backgroundColor).length",
+                            Object.keys(myChart.data.datasets[0].backgroundColor).length,
+                            "next color: ", backgroundColor[0]);
+              }
+
+            } else running = false;
+          }
+        };
+        //xh.open("GET", "http://192.168.1.165/status", true);
+        xh.open("GET", "/status", true);
+
+        xh.send(null);
+      }
+
+    function run(){
+    console.log ("RUN function reached with running of:", running);
+    if(!running){
+     running = true;
+     loadValues();
+     console.log ("returned from loadValues with running of:", running);
+     }
+    }
+
+
+</script>
+</head>
+<body id="index" style="margin:0; padding:0;" onload="onBodyLoad();">
+  <div id="controls" style="display: block; border: 1px solid rgb(68, 68, 68); padding: 5px; margin: 5px; width: 362px; background-color: rgb(38, 238, 238);">
+    <label>Refresh Interval (ms):</label>
+    <input type="number" id="refresh-rate"/>
+    <input type="button" id="start-button" value="Start"/>
+    <input type="button" id="stop-button" value="Stop"/>
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+    <input type ="datetime-local" id="start-datetime" placeholder=dateTime>
+    <input type ="datetime-local" id="stop-datetime" placeholder=dateTime>
+  </div>
+  <canvas id="myChart"style="width: 80%; height: 80%"></canvas>
+  <canvas id="BChart_Temp" style="width: 80%; height: 80%"></canvas>
+  <canvas id="BChart_Humid" style="width: 80%; height: 80%"></canvas>
+  <canvas id="BChart_CT_Ave" style="width: 80%; height: 80%"></canvas>
+  <canvas id="BChart_Cycles" style="width: 80%; height: 80%"></canvas>
+</body>
+</html>

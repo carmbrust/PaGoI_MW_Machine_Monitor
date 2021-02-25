@@ -1,0 +1,14 @@
+Notes on ace.js
+
+source is: https://github.com/ajaxorg/ace-builds/tree/master/src-min-noconflict
+
+using the ace.js and renaming as ace-min.js
+
+local version copy is at: X:\Installs\Languages\ace_src-min-noconflict_v20200115.js which is copied to data_uncompressed\js\ace-min.js
+
+Deployment options: 
+1. use ESP based copy of ace and associated files (this directory)
+2. use gateway copy of files (e.g. on 192.168.100.1 under /var/www/html/js/ace)
+3. use CDN version of ace 
+     <script id='ace' src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ace.js" type="text/javascript" charset="utf-8"></script>
+

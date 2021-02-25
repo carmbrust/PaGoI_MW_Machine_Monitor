@@ -1,0 +1,209 @@
+<!--
+  FSWebServer - Example Index Page
+  Copyright (c) 2015 Hristo Gochkov. All rights reserved.
+  This file is part of the ESP8266WebServer library for Arduino environment.
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+-->
+<!doctype html>
+<html lang="en">
+
+	<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <!-- Refresh every x minutes with count = seconds-->
+  <meta http-equiv="refresh" content="300" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ESP Sensor Monitor">
+    <title>ESP Sensor Monitor</title>
+
+    <!-- <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css" integrity="sha384-" crossorigin="anonymous"> -->
+    <!-- <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/grids-responsive-min.css"> -->
+    <!--local stored files-->
+    <!-- <link rel="stylesheet" href="./css/pure-min.css">
+    <link rel="stylesheet" href="./css/gridsresponsivemin.css">
+  	<link rel="stylesheet" href="./css/CustomStyles.min.css"> -->
+
+	  <link rel="stylesheet" href="./css/PaGoI-global.min.css">
+
+
+
+</head>
+<body>
+<!--
+[if lte IE 8]>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/grids-responsive-old-ie-min.css">
+	[endif]
+	[if gt IE 8]>
+	<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/grids-responsive-min.css">
+	[endif]
+	-->
+<div class="custom-wrapper pure-g" id="menu">
+    <div class="pure-u-1 pure-u-md-1-3">
+        <div class="pure-menu">
+            <a href="http://www.pagoi.com" class="pure-menu-heading custom-brand" id="brand">PAGOI</a>
+            <a href="#" class="custom-toggle" id="toggle"><s class="bar"></s><s class="bar"></s></a>
+        </div>
+    </div>
+    <div class="pure-u-1 pure-u-md-1-3">
+        <div class="pure-menu pure-menu-horizontal custom-can-transform">
+            <ul class="pure-menu-list">
+                <li class="pure-menu-item"><a href="index.htm" class="pure-menu-link">Home</a></li>
+                <li class="pure-menu-item"><a href="#" class="pure-menu-link">About</a></li>
+                <li class="pure-menu-item"><a href="#" class="pure-menu-link">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+  <!-- <script type="text/javascript" src="graphs.js"></script> -->
+  <script type="text/javascript" src="./js/graphs.min.js"></script>
+
+  <script type="text/javascript">
+    var heap,temp,digi, Humidity, Temperature, LastCT;
+    var reloadPeriod = 5000;
+    var running = false;
+
+    function loadValues(){
+      if(!running) return;
+      var xh = new XMLHttpRequest();
+      xh.onreadystatechange = function(){
+        if (xh.readyState == 4){
+          if(xh.status == 200) {
+            var res = JSON.parse(xh.responseText);
+            // console.log("returned json", res)
+            heap.add(res.heap);
+            temp.add(res.analog);
+            digi.add(res.gpio);
+            lastct.add(res.LastCT);
+            temperature.add(res.Temperature.V);
+            humidity.add(res.Humidity.V);
+
+            if(running)
+              setTimeout(loadValues, reloadPeriod);
+          } else running = false;
+        }
+      };
+      xh.open("GET", "/all", true);
+      xh.send(null);
+    };
+
+    function run(){
+      if(!running){
+        running = true;
+        loadValues();
+      }
+    }
+
+    function onBodyLoad(){
+      var refreshInput = document.getElementById("refresh-rate");
+      refreshInput.value = reloadPeriod;
+      refreshInput.onchange = function(e){
+        var value = parseInt(e.target.value);
+        reloadPeriod = (value > 0)?value:0;
+        e.target.value = reloadPeriod;
+      }
+      var stopButton = document.getElementById("stop-button");
+      stopButton.onclick = function(e){
+        running = false;
+      }
+      var startButton = document.getElementById("start-button");
+      startButton.onclick = function(e){
+        run();
+      }
+
+      // Example with 10K thermistor
+      //function calcThermistor(v) {
+      //  var t = Math.log(((10230000 / v) - 10000));
+      //  t = (1/(0.001129148+(0.000234125*t)+(0.0000000876741*t*t*t)))-273.15;
+      //  return (t>120)?0:Math.round(t*10)/10;
+      //}
+      //temp = createGraph(document.getElementById("analog"), "Temperature", 100, 128, 10, 40, false, "cyan", calcThermistor);
+      // measurement_variable = createGraph(document.getElementById("graph_div_name"), "Graph Title", 100, 128, 0, 1023, false, "cyan");
+      // createGraph ?, ?, Ymin, Ymax, true= bar /false= line, "graph_color"
+      temp = createGraph(document.getElementById("analog"), "Analog", 25, 25, 0, 1023, false, "cyan");
+      humidity = createGraph(document.getElementById("Humidity"), "Humidity", 100, 128, 0, 100, false, "white");
+      temperature = createGraph(document.getElementById("Temperature"), "Temperature", 100, 150, 0, 120, true, "cyan");
+      heap = createGraph(document.getElementById("heap"), "Current Heap", 100, 125, 0, 30000, true, "orange");
+      digi = createDigiGraph(document.getElementById("digital"), "GPIO - cycle", 100, 146, [0, 4, 5, 16], "gold");
+      lastct = createGraph(document.getElementById("LastCT"), "Last Cycle Time", 100, 128, 0, 40, true, "white");
+      run();
+    }
+  </script>
+</head>
+<body id="index" style="margin:0; padding:0;" onload="onBodyLoad()">
+  <div id="controls" style="display: block; border: 1px solid rgb(68, 68, 68); padding: 5px; margin: 5px; width: 362px; background-color: rgb(238, 238, 238);">
+    <label>Period (ms):</label>
+    <input type="number" id="refresh-rate"/>
+    <input type="button" id="start-button" value="Start"/>
+    <input type="button" id="stop-button" value="Stop"/>
+  </div>
+  <div id="LastCT"></div>
+  <div id="digital"></div>
+  <div id="Temperature"></div>
+  <div id="Humidity"></div>
+  <div id="analog"></div>
+  <div id="heap"></div>
+</body>
+
+<footer style="font-size:.5em; text-align: right"></style>
+<p>Adaption by Chris Armbrust, Marin Digital (c)2017-2021</p>
+<p>Contact: <a href='mailto:info@marin-digital.com'>
+info@marin-digital.com</a>.</p>
+<p>Version: .97 24Jan2021</p>
+</footer>
+
+<script language="javascript" type="text/javascript">
+  //Menu related functions
+(function (window, document) {
+var menu = document.getElementById('menu'),
+  WINDOW_CHANGE_EVENT = ('onorientationchange' in window) ? 'orientationchange':'resize';
+
+function toggleHorizontal() {
+  [].forEach.call(
+    document.getElementById('menu').querySelectorAll('.custom-can-transform'),
+    function(el){
+      el.classList.toggle('pure-menu-horizontal');
+    }
+  );
+};
+
+function toggleMenu() {
+  // set timeout so that the panel has a chance to roll up
+  // before the menu switches states
+  if (menu.classList.contains('open')) {
+    setTimeout(toggleHorizontal, 500);
+  }
+  else {
+    toggleHorizontal();
+  }
+  menu.classList.toggle('open');
+  document.getElementById('toggle').classList.toggle('x');
+};
+
+function closeMenu() {
+  if (menu.classList.contains('open')) {
+    toggleMenu();
+  }
+}
+
+document.getElementById('toggle').addEventListener('click', function (e) {
+  toggleMenu();
+  e.preventDefault();
+});
+
+window.addEventListener(WINDOW_CHANGE_EVENT, closeMenu);
+})(this, this.document);
+
+</script>
+
+</html>
